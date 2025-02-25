@@ -6,3 +6,5 @@ build:
       - go build main.go
 run:
   command: ./main
+  network:
+    port: 8080
