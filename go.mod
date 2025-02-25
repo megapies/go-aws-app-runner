@@ -1,3 +1,3 @@
 module go-aws-app-runner
 
-go 1.18.10
+go 1.23
