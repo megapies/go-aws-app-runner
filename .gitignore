@@ -1,0 +1,10 @@
+.env
+.env.local
+
+.DS_Store
+.qodo
+.vscode
+
+build
+dist
+
