@@ -1,18 +1,45 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, World!")
-}
-
 func main() {
-	http.HandleFunc("/", Handler)
+	app := fiber.New()
 
-	log.Println("Starting server on port 8080")
-	http.ListenAndServe(":8080", nil)
+	app.Use(logger.New())
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
+	})
+
+	app.Get("/persons", func(c *fiber.Ctx) error {
+		return c.JSON(fiber.Map{
+			"persons": []fiber.Map{
+				{
+					"id":   1,
+					"name": "John Doe",
+				},
+				{
+					"id":   2,
+					"name": "Jane Doe",
+				},
+				{
+					"id":   3,
+					"name": "John Smith",
+				},
+			},
+		})
+	})
+
+	app.Post("/persons", func(c *fiber.Ctx) error {
+		return c.JSON(fiber.Map{
+			"message": "Person created successfully",
+		})
+	})
+
+	log.Info("Starting server on port 8080")
+	app.Listen(":8080")
 }
